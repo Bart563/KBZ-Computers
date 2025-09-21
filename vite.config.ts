@@ -9,6 +9,7 @@
 
   export default defineConfig({
     base: base,
+    publicDir: 'public',
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
@@ -50,6 +51,7 @@
   build: {
     outDir: 'dist',
     sourcemap: true,
+    copyPublicDir: true,
     target: 'esnext',
     rollupOptions: {
       output: {
