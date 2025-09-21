@@ -5,9 +5,10 @@
   
   // https://vitejs.dev/config/
   const isGitHubPages = process.env.NODE_ENV === 'production';
+  const base = isGitHubPages ? '/KBZ-Computers/' : '/';
 
   export default defineConfig({
-    base: isGitHubPages ? '/KBZ-Computers/' : '/',
+    base: base,
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
@@ -44,21 +45,32 @@
         '@radix-ui/react-dropdown-menu@2.1.6': '@radix-ui/react-dropdown-menu',
         '@radix-ui/react-dialog@1.1.6': '@radix-ui/react-dialog',
         '@radix-ui/react-context-menu@2.2.6': '@radix-ui/react-context-menu',
-        '@radix-ui/react-collapsible@1.1.3': '@radix-ui/react-collapsible',
-        '@radix-ui/react-checkbox@1.1.4': '@radix-ui/react-checkbox',
-        '@radix-ui/react-avatar@1.1.3': '@radix-ui/react-avatar',
-        '@radix-ui/react-aspect-ratio@1.1.2': '@radix-ui/react-aspect-ratio',
     },
   },
   build: {
     outDir: 'dist',
     sourcemap: true,
     target: 'esnext',
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
+          // Keep assets in the same directory structure
+          const info = assetInfo.name.split('.');
+          const ext = info[info.length - 1].toLowerCase();
+          if (['png', 'jpg', 'jpeg', 'gif', 'svg', 'webp'].includes(ext)) {
+            return `assets/images/[name]-[hash][extname]`;
+          }
+          return `assets/[name]-[hash][extname]`;
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+      },
+    },
   },
   server: {
     port: 3000,
     open: true,
   },
 });
-    },
   });
