@@ -53,7 +53,11 @@
     sourcemap: true,
     copyPublicDir: true,
     target: 'esnext',
+    emptyOutDir: true,
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html')
+      },
       output: {
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
